@@ -1,253 +1,176 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sistem Nilai Siswa — Simple</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator Web — Lengkap</title>
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; background:#f6f8fb; color:#122; }
-    h1 { margin-top: 0; }
-    .card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 6px 18px rgba(16,24,40,0.06); max-width:900px; margin-bottom:16px; }
-    label { display:block; margin:8px 0 4px; font-weight:600; }
-    input[type="text"], input[type="number"] { width:100%; padding:8px 10px; border-radius:6px; border:1px solid #d6d8df; }
-    .grid { display:grid; grid-template-columns: repeat(3,1fr); gap:8px; }
-    button { padding:10px 14px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
-    .btn-primary { background:#2563eb; color:#fff; }
-    .btn-ghost { background:transparent; color:#2563eb; border:1px solid #cfe0ff; }
-    table { width:100%; border-collapse:collapse; margin-top:12px; }
-    th, td { text-align:left; padding:8px; border-bottom:1px solid #eee; }
-    th { background:#fbfdff; }
-    .center { text-align:center; }
-    .small { font-size:0.9rem; color:#555; }
-    .row { display:flex; gap:8px; align-items:center; }
-    .actions { display:flex; gap:8px; justify-content:flex-end; }
-    @media(max-width:640px){ .grid{ grid-template-columns: 1fr; } .actions{ flex-direction:column; } }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      padding: 24px;
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin: 8px 0 4px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background-color: #2563eb;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    #hasil {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #0a5;
+      text-align: center;
+    }
+
+    .small {
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    @media(max-width: 500px){
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Kalkulator Web — Lengkap</h1>
+    <label for="angka1">Angka Pertama</label>
+    <input type="number" id="angka1" placeholder="Contoh: 10" />
 
-  <h1>Sistem Nilai Siswa (Web — Simple)</h1>
-  <p class="small">Tambah siswa, hitung rata-rata, lihat peringkat, simpan atau muat data (.csv). Cocok untuk belajar HTML + JS.</p>
+    <label for="angka2">Angka Kedua</label>
+    <input type="number" id="angka2" placeholder="Contoh: 5" />
 
-  <div class="card">
-    <h2>Tambah Data Siswa</h2>
-    <div>
-      <label for="nama">Nama</label>
-      <input id="nama" type="text" placeholder="Masukkan nama siswa" />
+    <div class="grid">
+      <button onclick="hitung('+')">Tambah (+)</button>
+      <button onclick="hitung('-')">Kurang (-)</button>
+      <button onclick="hitung('*')">Kali (×)</button>
+      <button onclick="hitung('/')">Bagi (÷)</button>
+      <button onclick="hitung('^')">Pangkat (^)</button>
+      <button onclick="hitung('√')">Akar (√x)</button>
+      <button onclick="resetForm()">Reset</button>
     </div>
 
-    <div class="grid" style="margin-top:8px;">
-      <div>
-        <label for="mtk">Matematika</label>
-        <input id="mtk" type="number" min="0" max="100" placeholder="Nilai Matematika" />
-      </div>
-      <div>
-        <label for="bindo">Bahasa Indonesia</label>
-        <input id="bindo" type="number" min="0" max="100" placeholder="Nilai B. Indonesia" />
-      </div>
-      <div>
-        <label for="bing">Bahasa Inggris</label>
-        <input id="bing" type="number" min="0" max="100" placeholder="Nilai B. Inggris" />
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:12px;">
-      <button id="tambahBtn" class="btn-primary">Tambah Data</button>
-      <button id="clearBtn" class="btn-ghost">Kosongkan Form</button>
-      <div style="flex:1"></div>
-      <div class="actions">
-        <input id="fileInput" type="file" accept=".csv" style="display:none" />
-        <button id="importBtn" class="btn-ghost">Muat CSV</button>
-        <button id="exportBtn" class="btn-primary">Unduh CSV</button>
-      </div>
-    </div>
-
-    <div id="pesan" class="small" style="margin-top:8px;color:#2d6a4f;"></div>
+    <div id="hasil">Hasil akan tampil di sini.</div>
+    <p class="small">Gunakan tombol sesuai operasi yang diinginkan.</p>
   </div>
 
-  <div class="card">
-    <h2>Data Siswa</h2>
-    <div id="tableContainer">
-      <p class="small">Belum ada data. Tambah data siswa di atas.</p>
-    </div>
-  </div>
-
-<script>
-  // Struktur data: array objek { nama, mtk, bindo, bing, rata }
-  const dataSiswa = [];
-
-  // Elemen DOM
-  const namaEl = document.getElementById('nama');
-  const mtkEl = document.getElementById('mtk');
-  const bindoEl = document.getElementById('bindo');
-  const bingEl = document.getElementById('bing');
-  const tambahBtn = document.getElementById('tambahBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const tableContainer = document.getElementById('tableContainer');
-  const pesanEl = document.getElementById('pesan');
-  const exportBtn = document.getElementById('exportBtn');
-  const importBtn = document.getElementById('importBtn');
-  const fileInput = document.getElementById('fileInput');
-
-  // Fungsi bantu: validasi input
-  function validInput(nama, mtk, bindo, bing) {
-    if (!nama || nama.trim() === '') return "Nama harus diisi.";
-    if (isNaN(mtk) || isNaN(bindo) || isNaN(bing)) return "Masukkan nilai numerik untuk semua mata pelajaran.";
-    if (mtk < 0 || bindo < 0 || bing < 0) return "Nilai tidak boleh negatif.";
-    return null;
-  }
-
-  // Tambah data
-  tambahBtn.addEventListener('click', () => {
-    const nama = namaEl.value.trim();
-    const mtk = parseFloat(mtkEl.value);
-    const bindo = parseFloat(bindoEl.value);
-    const bing = parseFloat(bingEl.value);
-
-    const err = validInput(nama, mtk, bindo, bing);
-    if (err) {
-      showMessage(err, true);
-      return;
+  <script>
+    function ambilAngka(id) {
+      return parseFloat(document.getElementById(id).value);
     }
 
-    const rata = ((mtk + bindo + bing) / 3);
-    dataSiswa.push({
-      nama,
-      mtk,
-      bindo,
-      bing,
-      rata: Math.round(rata * 100) / 100
-    });
+    function hitung(op) {
+      const a = ambilAngka('angka1');
+      const b = ambilAngka('angka2');
+      let hasil = 0;
 
-    clearForm();
-    renderTable();
-    showMessage(Data ${nama} berhasil ditambahkan.);
-  });
+      if (isNaN(a)) {
+        tampilkanHasil("Angka pertama tidak valid!", true);
+        return;
+      }
 
-  // Kosongkan form
-  clearBtn.addEventListener('click', () => {
-    clearForm();
-    showMessage('Form dikosongkan.');
-  });
+      if (['+', '-', '*', '/', '^'].includes(op) && isNaN(b)) {
+        tampilkanHasil("Angka kedua tidak valid!", true);
+        return;
+      }
 
-  function clearForm() {
-    namaEl.value = '';
-    mtkEl.value = '';
-    bindoEl.value = '';
-    bingEl.value = '';
-    namaEl.focus();
-  }
+      switch(op) {
+        case '+':
+          hasil = a + b;
+          break;
+        case '-':
+          hasil = a - b;
+          break;
+        case '*':
+          hasil = a * b;
+          break;
+        case '/':
+          if (b === 0) {
+            tampilkanHasil("Tidak bisa dibagi dengan nol!", true);
+            return;
+          }
+          hasil = a / b;
+          break;
+        case '^':
+          hasil = Math.pow(a, b);
+          break;
+        case '√':
+          if (a < 0) {
+            tampilkanHasil("Akar dari bilangan negatif tidak valid!", true);
+            return;
+          }
+          hasil = Math.sqrt(a);
+          break;
+        default:
+          tampilkanHasil("Operasi tidak dikenali!", true);
+          return;
+      }
 
-  // Render tabel data (urut berdasarkan rata-rata desc)
-  function renderTable() {
-    if (dataSiswa.length === 0) {
-      tableContainer.innerHTML = '<p class="small">Belum ada data. Tambah data siswa di atas.</p>';
-      return;
+      tampilkanHasil(`Hasil: ${Math.round(hasil * 1000) / 1000}`);
     }
 
-    const copy = [...dataSiswa].sort((a,b) => b.rata - a.rata);
-    let html = '<table><thead><tr><th>#</th><th>Nama</th><th>Matematika</th><th>B. Indonesia</th><th>B. Inggris</th><th>Rata-rata</th></tr></thead><tbody>';
-    for (let i = 0; i < copy.length; i++) {
-      const s = copy[i];
-      html += `<tr>
-        <td>${i+1}</td>
-        <td>${escapeHtml(s.nama)}</td>
-        <td>${s.mtk}</td>
-        <td>${s.bindo}</td>
-        <td>${s.bing}</td>
-        <td>${s.rata}</td>
-      </tr>`;
+    function tampilkanHasil(pesan, isError = false) {
+      const el = document.getElementById('hasil');
+      el.textContent = pesan;
+      el.style.color = isError ? '#d62828' : '#0a5';
     }
-    html += '</tbody></table>';
 
-    // Tambah peringatan 3 teratas
-    const top3 = copy.slice(0,3).map((s,i) => ${i+1}. ${escapeHtml(s.nama)} (${s.rata})).join('<br>');
-    html += <div style="margin-top:10px;"><strong>🏅 Peringkat 3 Teratas</strong><div class="small">${top3}</div></div>;
-
-    tableContainer.innerHTML = html;
-  }
-
-  // pesan kecil
-  function showMessage(text, isError=false) {
-    pesanEl.style.color = isError ? '#b91c1c' : '#2d6a4f';
-    pesanEl.textContent = text;
-    setTimeout(() => { if (pesanEl.textContent === text) pesanEl.textContent = ''; }, 4500);
-  }
-
-  // Escape sederhana untuk menampilkan nama aman di HTML
-  function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  // Export CSV
-  exportBtn.addEventListener('click', () => {
-    if (dataSiswa.length === 0) {
-      showMessage('Tidak ada data untuk diunduh.', true);
-      return;
+    function resetForm() {
+      document.getElementById('angka1').value = '';
+      document.getElementById('angka2').value = '';
+      tampilkanHasil('Hasil akan tampil di sini.');
     }
-    const header = ['Nama','Matematika','B. Indonesia','B. Inggris','Rata-rata'];
-    const rows = dataSiswa.map(s => [s.nama, s.mtk, s.bindo, s.bing, s.rata]);
-    const csv = [header, ...rows].map(r => r.map(String).map(v => "${v.replace(/"/g,'""')}").join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'nilai_siswa.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-
-  // Import CSV (simple parser, asumsi header sama)
-  importBtn.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = reader.result;
-      parseCsvToData(text);
-      renderTable();
-      showMessage('CSV berhasil dimuat.');
-    };
-    reader.readAsText(file);
-    // reset agar bisa upload file yang sama lagi
-    e.target.value = '';
-  });
-
-  function parseCsvToData(csvText) {
-    // baris -> split \n, hilangkan baris kosong
-    const lines = csvText.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length>0);
-    if (lines.length <= 1) return;
-    const header = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim().toLowerCase());
-    const nameIdx = header.findIndex(h => h.includes('nama'));
-    const mtkIdx = header.findIndex(h => h.includes('matematika') || h.includes('mtk'));
-    const bindoIdx = header.findIndex(h => h.includes('indonesia') || h.includes('b. indonesia') || h.includes('bindo'));
-    const bingIdx = header.findIndex(h => h.includes('inggris') || h.includes('bing'));
-    const rataIdx = header.findIndex(h => h.includes('rata'));
-
-    // clear existing data, lalu muat
-    dataSiswa.length = 0;
-    for (let i = 1; i < lines.length; i++) {
-      // split sederhana: menghapus quote awal/akhir, lalu split on commas tidak sempurna tapi cukup untuk file hasil export kita
-      const cells = lines[i].split(',').map(c => c.replace(/^"|"$/g,'').trim());
-      const nama = cells[nameIdx] ?? siswa${i};
-      const mtk = parseFloat(cells[mtkIdx] ?? '0') || 0;
-      const bindo = parseFloat(cells[bindoIdx] ?? '0') || 0;
-      const bing = parseFloat(cells[bingIdx] ?? '0') || 0;
-      const rata = parseFloat(cells[rataIdx] ?? ((mtk+bindo+bing)/3)) || Math.round(((mtk+bindo+bing)/3)*100)/100;
-      dataSiswa.push({ nama, mtk, bindo, bing, rata });
-    }
-  }
-
-  // Inisialisasi (opsional: tambahkan contoh data kecil)
-  (function initDemo(){
-    // Uncomment jika mau contoh data awal
-    // dataSiswa.push({nama:'Andi', mtk:85, bindo:80, bing:78, rata:81});
-    // dataSiswa.push({nama:'Budi', mtk:90, bindo:92, bing:88, rata:90});
-    renderTable();
-  })();
-
-</script>
-
+  </script>
 </body>
 </html>
