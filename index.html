@@ -1,176 +1,18 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kalkulator Web — Lengkap</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f4f6f8;
-      padding: 40px;
-      color: #222;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-      padding: 24px;
-    }
-
-    h1 {
-      margin-top: 0;
-      text-align: center;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin: 8px 0 4px;
-    }
-
-    input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    button {
-      padding: 12px;
-      font-weight: 600;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background-color: #2563eb;
-      color: white;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background-color: #1d4ed8;
-    }
-
-    #hasil {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #0a5;
-      text-align: center;
-    }
-
-    .small {
-      font-size: 0.85rem;
-      color: #666;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    @media(max-width: 500px){
-      .grid { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
+   <title>Profile saya</title>
+   <Link real="stylesheet" herf="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Kalkulator Web — Lengkap</h1>
-    <label for="angka1">Angka Pertama</label>
-    <input type="number" id="angka1" placeholder="Contoh: 10" />
-
-    <label for="angka2">Angka Kedua</label>
-    <input type="number" id="angka2" placeholder="Contoh: 5" />
-
-    <div class="grid">
-      <button onclick="hitung('+')">Tambah (+)</button>
-      <button onclick="hitung('-')">Kurang (-)</button>
-      <button onclick="hitung('*')">Kali (×)</button>
-      <button onclick="hitung('/')">Bagi (÷)</button>
-      <button onclick="hitung('^')">Pangkat (^)</button>
-      <button onclick="hitung('√')">Akar (√x)</button>
-      <button onclick="resetForm()">Reset</button>
-    </div>
-
-    <div id="hasil">Hasil akan tampil di sini.</div>
-    <p class="small">Gunakan tombol sesuai operasi yang diinginkan.</p>
-  </div>
-
-  <script>
-    function ambilAngka(id) {
-      return parseFloat(document.getElementById(id).value);
-    }
-
-    function hitung(op) {
-      const a = ambilAngka('angka1');
-      const b = ambilAngka('angka2');
-      let hasil = 0;
-
-      if (isNaN(a)) {
-        tampilkanHasil("Angka pertama tidak valid!", true);
-        return;
-      }
-
-      if (['+', '-', '*', '/', '^'].includes(op) && isNaN(b)) {
-        tampilkanHasil("Angka kedua tidak valid!", true);
-        return;
-      }
-
-      switch(op) {
-        case '+':
-          hasil = a + b;
-          break;
-        case '-':
-          hasil = a - b;
-          break;
-        case '*':
-          hasil = a * b;
-          break;
-        case '/':
-          if (b === 0) {
-            tampilkanHasil("Tidak bisa dibagi dengan nol!", true);
-            return;
-          }
-          hasil = a / b;
-          break;
-        case '^':
-          hasil = Math.pow(a, b);
-          break;
-        case '√':
-          if (a < 0) {
-            tampilkanHasil("Akar dari bilangan negatif tidak valid!", true);
-            return;
-          }
-          hasil = Math.sqrt(a);
-          break;
-        default:
-          tampilkanHasil("Operasi tidak dikenali!", true);
-          return;
-      }
-
-      tampilkanHasil(`Hasil: ${Math.round(hasil * 1000) / 1000}`);
-    }
-
-    function tampilkanHasil(pesan, isError = false) {
-      const el = document.getElementById('hasil');
-      el.textContent = pesan;
-      el.style.color = isError ? '#d62828' : '#0a5';
-    }
-
-    function resetForm() {
-      document.getElementById('angka1').value = '';
-      document.getElementById('angka2').value = '';
-      tampilkanHasil('Hasil akan tampil di sini.');
-    }
-  </script>
+    <!-- Konten yang terlihat oleh pengunjung akan ada di sini -->
+    <div class="kartu-prifil">
+    <img src="pngtree-cute-cat-image-png-image_14938303.png" alt="foto profil saya">
+    <h1> Nama Lengkap Anda</h1>
+    <p>Siswa Sma yang tertarik dengan teknologi dan desain.Selamat dang di website pertama saya!</p>
+    <a href="https://www.instagram.com/ygaprdtttt?igsg=cDZ5d3BvbTI3ZWpy">Kunjungi Instagram Saya</a>
+    <button id="sapaButton">Sapa Saya!</button>
+  </div>   
 </body>
+  <scrip src="scrip.js"></scrip><scrip>
 </html>
