@@ -15,7 +15,7 @@ body {
 
 .kartu-profil img {
   width: 150px;
-  border-radius: 50%;
+  border-radius: 100%;
 }
 
 body.dark-mode {
