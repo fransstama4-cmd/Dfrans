@@ -2,6 +2,23 @@ body {
   background-color: #FFFFE0; /* Warna kuning cerah */
   font-family: Arial,sans-serif; /* Jenis huruf yang bersih dan mudah dibaca */
   color: #191970; /* Warna teks utama (Biru gelap) */
+/* ... (kode CSS kamu yang sudah ada sebelumnya) ... */
+
+
+/* STYLE UNTUK MODE GELAP */
+body.dark-mode {
+    background-color: #121212; /* Warna latar belakang jadi hitam gelap */
+    color: #e0e0e0; /* Warna teks utama jadi putih keabuan */
+}
+
+body.dark-mode .kartu-profil {
+    background-color: #1e1e1e; /* Warna kartu jadi sedikit lebih terang dari latar */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Bayangan diubah jadi terang */
+}
+
+body.dark-mode a {
+    color: #bb86fc; /* Warna link agar lebih terlihat di mode gelap */
+}
 }
 
 .kartu-profil{
