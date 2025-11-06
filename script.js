@@ -1,13 +1,23 @@
- const tombolSapa = document.getElementById('sapaButton')
-tombolSapa.addEventListener('click', function() {
-  alert('Halo! Terima kasih sudah berkunjung!');
-});
+const display = document.getElementById("display");
 
-const modeToggle = document.getElementById('mode-toggle'); // 1. Ambil tombolnya
-const body = document.body; // 2. Ambil elemen body
+function appendValue(value) {
+  display.value += value;
+}
 
-// 3. Jalankan fungsi saat tombol di-klik
-modeToggle.addEventListener('click', function() {
-    // 4. Tambahkan/hapus class 'dark-mode' pada body
-    body.classList.toggle('dark-mode');
-});
+function clearDisplay() {
+  display.value = "";
+}
+
+function deleteLast() {
+  display.value = display.value.slice(0, -1);
+}
+
+function calculate() {
+  try {
+    // Mengganti simbol ÷ dan × dengan operator JS
+    const expression = display.value.replace(/÷/g, "/").replace(/×/g, "*");
+    display.value = eval(expression);
+  } catch {
+    display.value = "Error";
+  }
+}
