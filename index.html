@@ -1,22 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Profile Saya</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Lengkap</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="calculator">
+    <h2>Kalkulator Sederhana</h2>
+    <input type="text" id="display" readonly />
     
-    <div class="kartu-profil">
-        <img src="pngtree-cute-cat-image-png-image_14938303.png" alt="foto profil saya">
-        <h1>sulis</h1>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button class="delete" onclick="deleteLast()">⌫</button>
+      <button onclick="appendValue('(')">(</button>
+      <button onclick="appendValue(')')">)</button>
 
-        <p>Selamat datang di website pertama saya!</p>
-        
-        <a href="https://www.instagram.com/ygaprdtttt?igsg=cDZ5d3BvbTI3ZWpy">Kunjungi Instagram Saya</a>
-        <button id="mode-toggle">jangan di klik</button>
-        <button id="mode-toggle">Ganti Mode</button>
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button class="operator" onclick="appendValue('/')">÷</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button class="operator" onclick="appendValue('*')">×</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button class="operator" onclick="appendValue('-')">−</button>
+
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button class="operator" onclick="appendValue('+')">+</button>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
