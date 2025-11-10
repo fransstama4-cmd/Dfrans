@@ -1,370 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Workout Tracker — Elmanuk</title>
-  <style>
-    :root{
-      --bg:#F3FBFA; /* calming mint */
-      --card:#FFFFFF;
-      --accent:#6FBFA6; /* softer teal */
-      --muted:#7C8B86;
-      --glass: rgba(255,255,255,0.7);
-      --danger:#F08A8A;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:#16321A;}
-    header{padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
-    h1{margin:0;font-size:18px}
-    .container{max-width:1100px;margin:10px auto;padding:12px}
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
-    .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(15,30,20,0.06);padding:14px}
-
-    /* left column */
-    .mini-cal{display:flex;flex-direction:column;gap:12px}
-    .week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-    .day{padding:8px;border-radius:10px;text-align:center;cursor:pointer}
-    .day.active{background:linear-gradient(180deg,var(--accent),#8ddab0);color:white}
-    .day.today{border:1px dashed var(--accent)}
-    .btn{background:var(--accent);border:none;color:white;padding:8px 12px;border-radius:10px;cursor:pointer}
-    .muted{color:var(--muted);font-size:13px}
-
-    /* right column */
-    .detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .subtle{font-size:13px;color:var(--muted)}
-
-    .ex-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-    .ex{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(111,191,166,0.06), rgba(111,191,166,0.02))}
-    .ex .left{display:flex;gap:12px;align-items:center}
-    .checkbox{width:20px;height:20px;border-radius:6px;border:2px solid #CFEDE0;display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .checkbox.checked{background:var(--accent);border-color:var(--accent);color:white}
-    input[type=number]{width:80px;padding:6px;border-radius:8px;border:1px solid #e6efe9}
-
-    .meta{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
-    .meta .box{flex:1;min-width:180px;padding:10px;border-radius:10px;background:var(--glass)}
-
-    .calbar{height:14px;border-radius:10px;background:#EAF6F2;overflow:hidden}
-    .calfill{height:100%;background:linear-gradient(90deg,var(--accent),#3fb08a);width:0%}
-
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-
-    /* responsive */
-    @media(max-width:900px){.grid{grid-template-columns:1fr;}.mini-cal{order:2}.card{padding:12px}}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Tracker Elmanuk</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Workout Tracker — Elmanuk</h1>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button id="settingsBtn" class="btn">Settings</button>
-      <button id="exportBtn" class="btn" style="background:#4B9CFF">Export</button>
-    </div>
-  </header>
+  <div class="container">
+    <header>
+      <h1>Workout Tracker Elmanuk</h1>
+      <button id="settings-btn">⚙️</button>
+    </header>
 
-  <main class="container">
-    <div class="grid">
-      <div class="card mini-cal">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div>
-            <div class="muted">Minggu ini</div>
-            <div id="weekRange">—</div>
-          </div>
-          <div style="text-align:right">
-            <div class="muted">Target kalori/hari</div>
-            <div id="dailyTarget">— kkal</div>
-          </div>
-        </div>
+    <main>
+      <section class="calendar-section">
+        <h2>Jadwal Mingguan</h2>
+        <ul id="calendar"></ul>
+      </section>
 
-        <div class="week" id="weekDays"></div>
+      <section class="detail-section">
+        <h2 id="day-title">Pilih Hari</h2>
+        <div id="workout-list"></div>
+        <label>Durasi (menit): <input type="number" id="duration" min="0"></label>
+        <button id="save-btn">Simpan Hari</button>
+      </section>
 
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button id="prevWeek" class="btn" style="background:#9dd6bf;color:#08321a">←</button>
-          <button id="nextWeek" class="btn" style="background:#9dd6bf;color:#08321a">→</button>
-          <button id="todayBtn" class="btn" style="background:#ffffff;color:var(--accent);border:1px solid var(--accent)">Hari ini</button>
-        </div>
+      <section class="progress-section">
+        <h2>Progres</h2>
+        <label>Kalori Berkurang Hari Ini: <input type="number" id="calories" min="0"> kcal</label>
+        <progress id="calorie-progress" value="0" max="500"></progress>
+        <h3>Berat Mingguan</h3>
+        <input type="number" id="weight" placeholder="Berat (kg)">
+        <button id="save-weight">Simpan Berat</button>
+        <ul id="weight-list"></ul>
+      </section>
+    </main>
 
-        <div style="margin-top:12px">
-          <div class="muted">Catatan berat mingguan</div>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <input id="weekWeight" type="number" placeholder="kg" style="padding:8px;border-radius:8px;border:1px solid #e6efe9;flex:1" />
-            <button id="saveWeight" class="btn">Simpan</button>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="card">
-        <div class="detail-head">
-          <div>
-            <div id="selectedDate" style="font-weight:700;font-size:16px">—</div>
-            <div class="subtle" id="dayLabel">—</div>
-          </div>
-          <div class="subtle">Durasi sesi: <span id="sessionDuration">0</span> menit</div>
-        </div>
-
-        <div class="ex-list" id="exList"></div>
-
-        <div class="meta">
-          <div class="box">
-            <div class="muted">Kalori hari ini</div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
-              <input id="calsEaten" type="number" placeholder="kkal" />
-              <button id="saveCals" class="btn">Simpan</button>
-            </div>
-            <div style="margin-top:10px">
-              <div class="calbar"><div id="calFill" class="calfill"></div></div>
-              <div class="subtle" style="margin-top:6px">Tersisa: <span id="calsLeft">—</span> kkal</div>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="muted">Catatan latihan</div>
-            <textarea id="note" placeholder="catatan singkat..." style="width:100%;height:90px;border-radius:8px;border:1px solid #e6efe9;padding:8px;margin-top:8px"></textarea>
-            <div style="display:flex;justify-content:flex-end;margin-top:8px">
-              <button id="saveNote" class="btn">Simpan</button>
-            </div>
-          </div>
-        </div>
-
-        <footer>Data tersimpan di browser (localStorage). Kamu bisa Export / Import untuk backup.</footer>
-      </div>
-    </div>
-  </main>
-
-  <!-- Settings modal (simple) -->
-  <div id="settingsModal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,10,8,0.3)">
-    <div style="width:90%;max-width:520px;background:var(--card);padding:16px;border-radius:12px">
-      <h3>Pengaturan</h3>
-      <div style="display:flex;gap:8px;flex-direction:column">
-        <label class="muted">Target kalori harian</label>
-        <input id="targetInput" type="number" placeholder="2000" style="padding:8px;border-radius:8px;border:1px solid #e6efe9" />
-
-        <label class="muted">Durasi default sesi (menit)</label>
-        <input id="defaultDuration" type="number" placeholder="45" style="padding:8px;border-radius:8px;border:1px solid #e6efe9" />
-
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button id="closeSettings" class="btn">Tutup</button>
-          <button id="saveSettings" class="btn" style="background:#4B9CFF">Simpan</button>
-        </div>
-      </div>
-    </div>
+    <footer>
+      <button id="export-btn">Export Data</button>
+    </footer>
   </div>
 
-  <script>
-    // --- Data model & defaults ---
-    const scheduleTemplate = {
-      // day names: 1 = Monday
-      1: [
-        {id:'fullHIIT', label:'Full Body HIIT', est:45},
-      ],
-      2: [
-        {id:'chest', label:'Dada • Tricep • Bahu', est:50},
-      ],
-      3: [
-        {id:'core', label:'Core & Abs', est:30},
-      ],
-      4: [
-        {id:'legs', label:'Lower Body', est:45},
-      ],
-      5: [
-        {id:'back', label:'Bicep • Wing • Back', est:45},
-      ],
-      6: [
-        {id:'cardio', label:'Bulu Tangkis / Cardio', est:60},
-      ],
-      7: []
-    };
+  <div id="settings-modal" class="modal hidden">
+    <h2>Pengaturan</h2>
+    <label>Target Kalori Harian: <input type="number" id="target-calories" min="100"></label>
+    <label>Durasi Default (menit): <input type="number" id="default-duration" min="10"></label>
+    <button id="save-settings">Simpan</button>
+    <button id="close-settings">Tutup</button>
+  </div>
 
-    // storage keys
-    const KEY = 'el_workout_v1';
-
-    function loadState(){
-      const raw = localStorage.getItem(KEY);
-      if(!raw) return {targets:{dailyCals:2000, defaultDuration:45}, entries:{}, weights:{}};
-      try{ return JSON.parse(raw);}catch(e){return {targets:{dailyCals:2000, defaultDuration:45}, entries:{}, weights:{}}}
-    }
-    function saveState(s){ localStorage.setItem(KEY, JSON.stringify(s)); }
-
-    let state = loadState();
-
-    // --- helpers ---
-    function startOfWeek(date){ // monday
-      const d = new Date(date);
-      const day = (d.getDay()+6)%7; // 0=mon
-      d.setDate(d.getDate()-day);
-      d.setHours(0,0,0,0);
-      return d;
-    }
-    function formatDate(d){ return d.toISOString().slice(0,10); }
-    function niceDate(d){ return d.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'short',day:'numeric'}); }
-
-    // --- UI refs ---
-    const weekDaysEl = document.getElementById('weekDays');
-    const weekRangeEl = document.getElementById('weekRange');
-    const selectedDateEl = document.getElementById('selectedDate');
-    const dayLabelEl = document.getElementById('dayLabel');
-    const exListEl = document.getElementById('exList');
-    const sessionDurationEl = document.getElementById('sessionDuration');
-    const calsEatenEl = document.getElementById('calsEaten');
-    const saveCalsBtn = document.getElementById('saveCals');
-    const calFillEl = document.getElementById('calFill');
-    const calsLeftEl = document.getElementById('calsLeft');
-    const noteEl = document.getElementById('note');
-    const saveNoteBtn = document.getElementById('saveNote');
-    const weekWeightInput = document.getElementById('weekWeight');
-    const saveWeightBtn = document.getElementById('saveWeight');
-    const dailyTargetEl = document.getElementById('dailyTarget');
-
-    const settingsBtn = document.getElementById('settingsBtn');
-    const settingsModal = document.getElementById('settingsModal');
-    const targetInput = document.getElementById('targetInput');
-    const defaultDurationInput = document.getElementById('defaultDuration');
-    const saveSettingsBtn = document.getElementById('saveSettings');
-    const closeSettingsBtn = document.getElementById('closeSettings');
-
-    const exportBtn = document.getElementById('exportBtn');
-
-    // week pointer
-    let weekStart = startOfWeek(new Date());
-    let selectedDate = new Date();
-
-    function renderWeek(){
-      weekDaysEl.innerHTML='';
-      const labels = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
-      for(let i=0;i<7;i++){
-        const d = new Date(weekStart);
-        d.setDate(weekStart.getDate()+i);
-        const iso = formatDate(d);
-        const btn = document.createElement('div');
-        btn.className='day'+(iso===formatDate(selectedDate)?' active':'')+(iso===formatDate(new Date())?' today':'');
-        btn.innerHTML = `<div style="font-weight:700">${labels[i]}</div><div class="muted">${d.getDate()}</div>`;
-        btn.onclick = ()=>{ selectedDate = new Date(d); render(); }
-        weekDaysEl.appendChild(btn);
-      }
-      const end = new Date(weekStart); end.setDate(weekStart.getDate()+6);
-      weekRangeEl.textContent = weekStart.toLocaleDateString('id-ID',{day:'numeric',month:'short'}) + ' — ' + end.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-      dailyTargetEl.textContent = (state.targets?.dailyCals || 2000) + ' kkal';
-    }
-
-    function render(){
-      renderWeek();
-      selectedDateEl.textContent = niceDate(selectedDate);
-      dayLabelEl.textContent = 'Klik checklist setelah selesai latihan';
-
-      // exercises for that weekday
-      const weekday = ((selectedDate.getDay()+6)%7)+1;
-      const list = scheduleTemplate[weekday] || [];
-      exListEl.innerHTML='';
-
-      let totalDur = 0;
-      list.forEach(item=>{
-        const id = formatDate(selectedDate)+'::'+item.id;
-        const done = state.entries?.[id]?.done || false;
-        const duration = state.entries?.[id]?.duration || item.est || state.targets.defaultDuration;
-        totalDur += Number(duration);
-
-        const ex = document.createElement('div'); ex.className='ex';
-        ex.innerHTML = `
-          <div class="left"><div class="checkbox ${done? 'checked':''}" data-id="${id}">${done? '✓':''}</div><div>
-            <div style="font-weight:700">${item.label}</div>
-            <div class="muted">Estimasi ${item.est} menit</div>
-          </div></div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input type="number" min="0" class="durInput" data-id="${id}" value="${duration}" />
-          </div>
-        `;
-        exListEl.appendChild(ex);
-      });
-
-      sessionDurationEl.textContent = totalDur;
-
-      // load calories & note
-      const calsKey = formatDate(selectedDate)+ '::cals';
-      calsEatenEl.value = state.entries?.[calsKey]?.value || '';
-      const noteKey = formatDate(selectedDate)+ '::note';
-      noteEl.value = state.entries?.[noteKey]?.value || '';
-      updateCalBar();
-
-      // attach handlers
-      document.querySelectorAll('.checkbox').forEach(el=>{
-        el.onclick = ()=>{
-          const id = el.dataset.id;
-          if(!state.entries) state.entries={};
-          state.entries[id] = state.entries[id] || {};
-          state.entries[id].done = !state.entries[id].done;
-          saveState(state); render();
-        }
-      });
-      document.querySelectorAll('.durInput').forEach(inp=>{
-        inp.onchange = ()=>{
-          const id = inp.dataset.id;
-          if(!state.entries) state.entries={};
-          state.entries[id] = state.entries[id] || {};
-          state.entries[id].duration = Number(inp.value);
-          saveState(state); render();
-        }
-      });
-    }
-
-    function updateCalBar(){
-      const key = formatDate(selectedDate)+'::cals';
-      const eaten = Number(state.entries?.[key]?.value || 0);
-      const target = Number(state.targets?.dailyCals || 2000);
-      const used = Math.min(100, Math.round((eaten/target)*100));
-      calFillEl.style.width = used + '%';
-      calsLeftEl.textContent = Math.max(0, target - eaten);
-    }
-
-    saveCalsBtn.onclick = ()=>{
-      const num = Number(calsEatenEl.value||0);
-      const key = formatDate(selectedDate)+'::cals';
-      state.entries = state.entries || {};
-      state.entries[key] = {value:num};
-      saveState(state); updateCalBar(); alert('Kalori tersimpan');
-    }
-    saveNoteBtn.onclick = ()=>{
-      const val = noteEl.value || '';
-      const key = formatDate(selectedDate)+'::note';
-      state.entries = state.entries || {};
-      state.entries[key] = {value:val};
-      saveState(state); alert('Catatan disimpan');
-    }
-
-    saveWeightBtn.onclick = ()=>{
-      const w = Number(weekWeightInput.value||0);
-      if(!w){ alert('Masukkan berat valid'); return; }
-      const wk = formatDate(startOfWeek(selectedDate));
-      state.weights = state.weights || {};
-      state.weights[wk] = w;
-      saveState(state); alert('Berat mingguan tersimpan');
-    }
-
-    document.getElementById('prevWeek').onclick = ()=>{ weekStart.setDate(weekStart.getDate()-7); render(); }
-    document.getElementById('nextWeek').onclick = ()=>{ weekStart.setDate(weekStart.getDate()+7); render(); }
-    document.getElementById('todayBtn').onclick = ()=>{ selectedDate = new Date(); weekStart = startOfWeek(new Date()); render(); }
-
-    // settings
-    settingsBtn.onclick = ()=>{ settingsModal.style.display='flex'; targetInput.value = state.targets?.dailyCals || 2000; defaultDurationInput.value = state.targets?.defaultDuration || 45; }
-    closeSettingsBtn.onclick = ()=>{ settingsModal.style.display='none'; }
-    saveSettingsBtn.onclick = ()=>{
-      const tc = Number(targetInput.value||0);
-      const dd = Number(defaultDurationInput.value||45);
-      state.targets = state.targets || {};
-      if(tc>0) state.targets.dailyCals = tc;
-      state.targets.defaultDuration = dd;
-      saveState(state); settingsModal.style.display='none'; render();
-    }
-
-    exportBtn.onclick = ()=>{
-      const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'workout_backup.json'; a.click(); URL.revokeObjectURL(url);
-    }
-
-    // initial render
-    render();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
